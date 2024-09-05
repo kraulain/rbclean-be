@@ -1,9 +1,11 @@
 import express from "express"
 import { Kafka } from "kafkajs";
-var router = express.Router();
+import { v4 as uuidv4 } from "uuid";
+
+const router = express.Router();
 
 const kafka = new Kafka({
-  clientId: 'profile-service-producer',
+  clientId: 'api-gateway-service',
   brokers: ['kafka:9092'],
 });
 
@@ -21,7 +23,7 @@ async function initKafka() {
   // Listen for responses
   consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      const response = JSON.parse(message.value.toString());
+      const response = JSON.parse(message.value!.toString());
       const { correlationId, data } = response;
 
       // Resolve the promise for the matching correlation ID
@@ -32,13 +34,6 @@ async function initKafka() {
     },
   });
 }
-
-/* 
-GET home page. 
-*/
-router.get('/health', function (req, res, next) {
-  res.status(200).json({ "message": 'Up', "timestamp": Date.now() });
-});
 
 router.post('/profiles', async function (req, res, next) {
   const profile = req.body;
@@ -60,6 +55,6 @@ router.post('/profiles', async function (req, res, next) {
   res.status(200).json({ "message": "Profile created", "response": responseData });
 });
 
-initKafka();
+// initKafka();
 
 export default router;
