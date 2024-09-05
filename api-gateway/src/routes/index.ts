@@ -1,16 +1,18 @@
-import express from "express"
+import express from "express";
 import { Kafka } from "kafkajs";
 import { v4 as uuidv4 } from "uuid";
 
 const router = express.Router();
 
 const kafka = new Kafka({
-  clientId: 'api-gateway-service',
-  brokers: ['kafka:9092'],
+  clientId: "api-gateway-service",
+  brokers: ["kafka:9092"],
 });
 
 const producer = kafka.producer();
-const consumer = kafka.consumer({ groupId: 'profile-service.create.response-handler' });
+const consumer = kafka.consumer({
+  groupId: "profile-service.create.response-handler",
+});
 const pendingResponses = new Map();
 
 async function initKafka() {
@@ -18,7 +20,10 @@ async function initKafka() {
   await consumer.connect();
 
   // Subscribe to the response topic
-  await consumer.subscribe({ topic: 'profile-service.create.response', fromBeginning: false });
+  await consumer.subscribe({
+    topic: "profile-service.create.response",
+    fromBeginning: false,
+  });
 
   // Listen for responses
   consumer.run({
@@ -35,13 +40,13 @@ async function initKafka() {
   });
 }
 
-router.post('/profiles', async function (req, res, next) {
+router.post("/profiles", async function (req, res, next) {
   const profile = req.body;
   const correlationId = uuidv4(); // Generate a unique ID for this request
 
   // Send the profile data to the 'profile-service.create.request' topic with the correlation ID
   await producer.send({
-    topic: 'profile-service.create.request',
+    topic: "profile-service.create.request",
     messages: [{ value: JSON.stringify({ profile, correlationId }) }],
   });
 
@@ -52,9 +57,9 @@ router.post('/profiles', async function (req, res, next) {
 
   // Wait for the response and return it as JSON
   const responseData = await responsePromise;
-  res.status(200).json({ "message": "Profile created", "response": responseData });
+  res.status(200).json({ message: "Profile created", response: responseData });
 });
 
-// initKafka();
+initKafka();
 
 export default router;

@@ -1,1 +1,1 @@
-export { default as profileRouter } from "./profile"
+export { default as profileRouter } from "./profile";

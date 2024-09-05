@@ -10,10 +10,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/profiles", profileRouter);
 
-app.get('/health', function (req, res, next) {
-  res.status(200).json({ message: "Profile-service up and running", "timestamp": Date.toString() });
+app.get("/health", function (req, res, next) {
+  res.status(200).json({
+    message: "Profile-service up and running",
+    timestamp: new Date().toString(),
+  });
 });
 
 app.listen(PORT, () => {
-  console.log(`\nListening on http://localhost:${PORT}\n`)
+  console.log(`\nListening on http://localhost:${PORT}\n`);
 });

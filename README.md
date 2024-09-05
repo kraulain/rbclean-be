@@ -4,9 +4,13 @@ RB Clean is a simple laundry pickup service service
 
 ## How to setup
 
-- https://expressjs.com/en/starter/generator.html
+- For specification on each service, follow the __Readme__ file for that service
+  - [api-gateway-readme](./api-gateway/Readme.md)
+  - [auth-service-readme](./auth/Readme.md)
+  - [order-service-readme](./orders/Readme.md)
+  - [profile-service-readme](./profile/Readme.md)
 
-- Copy `.env.example` (if existing) and create `.env` at root of your service
+- For each service Copy `.env.example` (if existing) and create `.env` at root of your service
 
 ### Kafka message format
 
