@@ -2,18 +2,35 @@
   "name": "api-gateway",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
+  "main": "./build/app.js",
   "scripts": {
-    "start": "node ./app.js"
+    "dev": "npx nodemon",
+    "start": "npm run build && node ./build/app.js",
+    "build": "rm -rf ./build && npx tsc",
+    "format": "npx prettier ./src --write",
+    "format:check": "npx prettier ./src --check"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
+    "dotenv": "^16.4.5",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "kafkajs": "^2.2.4",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.3",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   }
 }
