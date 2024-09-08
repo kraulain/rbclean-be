@@ -1,0 +1,12 @@
+node_modules
+*lock*
+.vscode
+*cache*
+
+build
+dist
+
+*prettier*
+
+nodemon.json
+.gitignore
